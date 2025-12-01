@@ -1,29 +1,47 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { DB_Name_Checker } from "../components/utils/registerationPage/submit_Action";
 import NavbarRegist from "../components/registerationPage/navbarRegister";
 import RegistForm from "../components/registerationPage/registForm";
+import NotiSubmit from "../components/registerationPage/notisubmit";
+
 export default function RegistrationForm() {
-  // Example data
   const [userInfo, setUserInfo] = useState({
     name: "John",
     surname: "Doe",
-    id: "123456789",
+    id: "12345679",
     email: "john.doe@example.com",
     dob: "1990-01-01",
     phoneNumber: "0933456790",
     internet: ""
   });
-  let [buttonstate,setbuttonstate] = useState(true)
+
+  const [buttonstate, setbuttonstate] = useState(true);
+  const [isRegistered, setIsRegistered] = useState(null); // null = ยังไม่เช็ค
+
+  useEffect(() => {
+    async function checkDB() {
+      const result = await DB_Name_Checker(userInfo);
+      setIsRegistered(result);
+    }
+    checkDB();
+  }, [userInfo]);
+
   return (
     <>
       <NavbarRegist />
-        {
-        buttonstate ?
-            <RegistForm userInfo={userInfo} setUserInfo={setUserInfo} setbuttonstate={setbuttonstate}/>
-            :
-            <h1 className="flex justify-center items-center min-h-screen" >NotiSubmit</h1>
-        }
-      
-      
+      {isRegistered === null ? (
+        <h1>กำลังเช็คข้อมูล...</h1>
+      ) : isRegistered ? (
+        <h1>ไปหน้าที่เป็นว่าอัพโหลดเอกสาร certificate</h1>
+      ) : buttonstate ? (
+        <RegistForm 
+          userInfo={userInfo} 
+          setUserInfo={setUserInfo} 
+          setbuttonstate={setbuttonstate}
+        />
+      ) : (
+        <NotiSubmit userInfo={userInfo} />
+      )}
     </>
   );
 }

@@ -109,7 +109,7 @@ export default function RegistForm({ userInfo, setUserInfo, setbuttonstate }) {
         <button
           onClick={onClickButton}
           type="button"
-          className="btn btn-success w-full mt-4"
+          className="w-full mt-4 bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded"
         >
           ยืนยันการลงทะเบียน
         </button>
