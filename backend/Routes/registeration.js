@@ -35,24 +35,23 @@ registeration.post("/uploadRegist_Info", async (req, res) => {
 });
 
 
+// // POST /Upload Blob type
+// registeration.post("/uploadRegist_Info/Certificate", (req, res) => {
+//     const data = req.body;
 
-// POST /Upload Blob type
-registeration.post("/uploadRegist_Info/Certificate", (req, res) => {
-    const data = req.body;
+//     res.json({
+//         message: "User created",
+//         received: data
+//     });
+// });
 
-    res.json({
-        message: "User created",
-        received: data
-    });
-});
-
-// GET /Image from Blob type
-registeration.get("/getRegist_Info/Certificate", async (req, res) => {
-    res.json({
-        name: "Poomipat",
-        status: "active"
-    });
-});
+// // GET /Image from Blob type
+// registeration.get("/getRegist_Info/Certificate", async (req, res) => {
+//     res.json({
+//         name: "Poomipat",
+//         status: "active"
+//     });
+// });
 
 
 // GET /Check Database

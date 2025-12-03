@@ -28,6 +28,13 @@ export default function RegistrationForm() {
 
   return (
     <>
+    {/* Logic :
+        เชคว่าได้มีการลงทะเบียนรึยัง 
+          ถ้ายัง ให้ไปหน้าลงทะเบียนก่อน
+          ถ้าใช่ ให้ไปหน้าอัพโหลด form
+            ถ้าเคยอัพโหลดแล้วไปอีกหน้านึง แจ้ง noti ไว้ว่า เคยส่งไว้แล้ว
+
+    */}
       <NavbarRegist />
       {isRegistered === null ? (
         <h1>กำลังเช็คข้อมูล...</h1>
