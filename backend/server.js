@@ -19,6 +19,7 @@ app.use(
       "http://127.0.0.1:3000",
       "http://localhost:3000",
       "http://localhost:5173",
+      "https://5g-test.nodomain.space"
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
@@ -27,7 +28,7 @@ app.use(
 );
 
 app.use(express.json());
-app.use("/registeration",registeration); // สำหรับ ลงทะเบรยนและเชคลงทะเบียน
+app.use("/api",registeration); // สำหรับ ลงทะเบรยนและเชคลงทะเบียน
 const PORT = process.env.SERVER_PORT || 11111;
 const HOST = process.env.HOST || "127.0.0.1";
 
