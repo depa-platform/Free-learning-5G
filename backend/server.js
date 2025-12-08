@@ -19,7 +19,7 @@ app.use(
       "http://127.0.0.1:3000",
       "http://localhost:3000",
       "http://localhost:5173",
-      "https://5g-test.nodomain.space"
+      "https://depa-5g-test.nodomain.space"
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
