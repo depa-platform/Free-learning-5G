@@ -7,20 +7,22 @@ services:
     ports:
       - "3306:80"
     volumes:
-      - ./frontend/dist:/usr/share/nginx/html:ro
-      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./frontend/dist:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
     networks:
       - 5g_platform
     depends_on:
       - backend
 
   backend:
-    images: node:20
+    image: node:20
     container_name: 5g-backend
     working_dir: /app
     volumes:
       - ./backend:/app
-      - /app/node_modules   # ป้องกัน node_modules overwrite
+      - /app/node_modules
+    command: >
+      sh -c "npm install && npm run start"
     ports:
       - "12345:12345"
     networks:
