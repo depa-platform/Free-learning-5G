@@ -22,6 +22,7 @@ services:
     volumes:
       - ./backend:/app
       - ./backend/.env:/app/.env   # ✔ ต้องระบุ path:containerPath
+      - ./node_modules:/app
     
     command: ["npm", "start"]
     
