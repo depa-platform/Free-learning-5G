@@ -29,7 +29,7 @@ app.use(
 
 app.use(express.json());
 app.use("/api",registeration); // สำหรับ ลงทะเบรยนและเชคลงทะเบียน
-const PORT = process.env.SERVER_PORT || 11111;
+const PORT = process.env.SERVER_PORT || 12345;
 const HOST = "0.0.0.0" || "127.0.0.1";
 
 app.listen(PORT, HOST, () => {
