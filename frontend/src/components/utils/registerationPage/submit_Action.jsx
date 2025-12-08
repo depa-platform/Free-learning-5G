@@ -4,7 +4,7 @@ import React from "react"
 export async function SubmitAction(userInfo) {
     try {
         const response = await axios.post(
-            `${import.meta.env.VITE_BACKEND}/registeration/uploadRegist_Info`,
+            `${import.meta.env.VITE_BACKEND}/api/uploadRegist_Info`,
             userInfo, // send userInfo as JSON
             {
                 headers: {
@@ -25,7 +25,7 @@ export async function DB_Name_Checker(userInfo) {
     //TODO : return (True) ถ้า มีแล้ว
     //TODO : return (False) ถ้ายังไม่มี
     try {
-        const backendUrl = `${import.meta.env.VITE_BACKEND}/registeration/getRegist_Info/CheckList`;
+        const backendUrl = `${import.meta.env.VITE_BACKEND}/api/getRegist_Info/CheckList`;
 
         // userInfo.id will be converted to ?id=123456789
         const response = await axios.get(backendUrl, { params: { id: userInfo.id } });
