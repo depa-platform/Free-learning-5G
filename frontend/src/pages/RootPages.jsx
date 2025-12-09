@@ -5,7 +5,7 @@ export default function Root(){
         <>
         <div className="flex justify-center items-center min-h-screen">
             <h1 className="text-4xl font-bold text-red-600">
-                Welcome to 5G test CI/CD V.6
+                Welcome to 5G test CI/CD V.7
             </h1>
         </div>
         </>
