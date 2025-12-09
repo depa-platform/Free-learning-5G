@@ -1,4 +1,4 @@
-name: Push-to-ec2
+name: Push-to-EC2 instance
 
 on:
   push:
@@ -7,36 +7,42 @@ on:
 
 jobs:
   deploy:
-    name: Push-to-ec2
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout the code
         uses: actions/checkout@v3
-        
-      - name: Deploy to EC2
+
+      # 1) ส่งไฟล์ทั้งหมดขึ้น EC2
+      - name: Deploy to my EC2 instance
         uses: easingthemes/ssh-deploy@v2.1.5
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
           REMOTE_HOST: ${{ secrets.HOST_DNS }}
           REMOTE_USER: ${{ secrets.USERNAME }}
-
-        with:
           SOURCE: "./"
           TARGET: "/home/ec2-user/5G-freelerning/Free-learning-5G"
 
-          SCRIPT_AFTER: |
+      # 2) รันคำสั่งบน EC2 (build + restart docker)
+      - name: Executing remote ssh commands using ssh key
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.HOST_DNS }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
             cd /home/ec2-user/5G-freelerning/Free-learning-5G
+
             echo "Cleaning old frontend build..."
-            rm -rf frontend/dist
+            rm -rf frontend/dist || true
 
-            echo "Installing all dependencies..."
+            echo "Installing dependencies..."
             npm install
-            
-            echo "Building frontend..."
-            sudo npm run build -w frontend
 
-            echo "Restarting Docker..."
+            echo "Building frontend..."
+            npm run build -w frontend
+
+            echo "Restarting docker..."
             docker compose down || true
             docker compose up -d --build
 
