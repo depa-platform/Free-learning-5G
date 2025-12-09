@@ -1,10 +1,8 @@
 name: Push-to-ec2
 
-#trigger deployment only on push to main branch
-
 on:
   push:
-    branch:
+    branches:
       - main
 
 jobs:
@@ -16,31 +14,25 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v3
         
-      - name: deploy to ec2 instant
-        uses: easingthemes/ssh-dwploy@2.1.5
+      - name: Deploy to EC2
+        uses: easingthemes/ssh-deploy@v2.3.0
         env:
-          
-          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}     # private key จาก GitHub Secrets
-          REMOTE_HOST: ${{ secrets.EC2_HOST }}            # IP หรือ Domain
-          REMOTE_USER: ${{ secrets.USERNAME }}            # หรือ ec2-user (ถ้า Amazon Linux)
-          
-          # ไฟล์/โฟลเดอร์บน GitHub ที่ต้องการส่งขึ้น EC2
-          SOURCE: "./"
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
+          REMOTE_HOST: ${{ secrets.EC2_HOST }}
+          REMOTE_USER: ${{ secrets.USERNAME }}
 
-          # โฟลเดอร์ปลายทางบน EC2
+          SOURCE: "./"
           TARGET: "/home/ec2-user/5G-freelerning/Free-learning-5G"
 
-          # หลัง deploy สั่ง restart ระบบ
           SCRIPT_AFTER: |
             cd /home/ec2-user/5G-freelerning/Free-learning-5G
-
             echo "Cleaning old frontend build..."
             rm -rf frontend/dist
 
-            echo "installing all dependencies..."
+            echo "Installing all dependencies..."
             npm install
             
-            echo "build new front/dist"
+            echo "Building frontend..."
             sudo npm run build -w frontend
 
             echo "Restarting Docker..."
@@ -48,5 +40,3 @@ jobs:
             docker compose up -d --build
 
             echo "Deployment complete!"
-
-
