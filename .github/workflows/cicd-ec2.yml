@@ -15,10 +15,6 @@ jobs:
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
         
       - name: deploy to ec2 instant
         uses: easingthemes/ssh-dwploy@2.1.5
