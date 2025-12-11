@@ -13,7 +13,7 @@ export default function RegistrationForm() {
     dob: "1990-01-01",
     phoneNumber: "0933456790",
     internet: "",
-    video_name:"",
+    file_name:"",
     success:0
   });
 
