@@ -12,7 +12,9 @@ export default function RegistrationForm() {
     email: "john.doe@example.com",
     dob: "1990-01-01",
     phoneNumber: "0933456790",
-    internet: ""
+    internet: "",
+    video_name:"",
+    success:0
   });
 
   const [buttonstate, setbuttonstate] = useState(true);
@@ -30,15 +32,19 @@ export default function RegistrationForm() {
     <>
     {/* Logic :
         เชคว่าได้มีการลงทะเบียนรึยัง 
-          ถ้ายัง ให้ไปหน้าลงทะเบียนก่อน
-          ถ้าใช่ ให้ไปหน้าอัพโหลด form
-            ถ้าเคยอัพโหลดแล้วไปอีกหน้านึง แจ้ง noti ไว้ว่า เคยส่งไว้แล้ว
+          ถ้ายัง ให้ไป ลงทะเบียนก่อน
+          ถ้าใช่ ให้ไป ดูคลิปเลย
+
+          ดูจบมั้ย
+            ดูจบ :   ไป แจ้งเตือนรุ้นรางวัล
+            ดูไปจบ : ไป ดูวิดีโอ
 
     */}
       <NavbarRegist />
       {isRegistered === null ? (
         <h1>กำลังเช็คข้อมูล...</h1>
-      ) : isRegistered ? (
+      ) : isRegistered ? (                            //เชค ว่าได้ลงทะเบียนมาในระบบรึยัง ?
+        //ดูคลิป  ( Component )                       
         <h1>ไปหน้าที่เป็นว่าอัพโหลดเอกสาร certificate</h1>
       ) : buttonstate ? (
         <RegistForm 
@@ -47,7 +53,8 @@ export default function RegistrationForm() {
           setbuttonstate={setbuttonstate}
         />
       ) : (
-        <NotiSubmit userInfo={userInfo} />
+        //ดูคลิป  ( Component )
+        <h1>ไปหน้าที่เป็นว่าอัพโหลดเอกสาร certificate</h1>
       )}
     </>
   );

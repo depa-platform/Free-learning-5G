@@ -15,13 +15,14 @@ registeration.post("/uploadRegist_Info", async (req, res) => {
             data.email,
             data.dob,
             data.phoneNumber,
-            data.internet || null // ถ้าเป็น "" ให้เป็น null
+            data.internet || null ,// ถ้าเป็น "" ให้เป็น null
+            data.file_name,
         ];
 
         const sqlQuery = `
             INSERT INTO Registeration 
-            (name, surname, id, email, dob, phonenumber, internet) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            (name, surname, id, email, dob, phonenumber, internet,file_name) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         `;
 
         const [result] = await sql.query(sqlQuery, values);

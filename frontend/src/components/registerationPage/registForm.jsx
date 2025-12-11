@@ -9,14 +9,16 @@ export default function RegistForm({ userInfo, setUserInfo, setbuttonstate }) {
   };
 
   const onClickButton = () => {
-    let newErrors = {};
-
+    let newErrors_internetProvider = {};
+    let newErrors_CourseSelection= {}
     // ตรวจช่องที่ต้องใส่
-    if (!userInfo?.internet) newErrors.internet = "กรุณาเลือกค่ายอินเทอร์เน็ต";
-        setErrors(newErrors);
+    if (!userInfo?.internet) newErrors_internetProvider.internet = "กรุณาเลือกค่ายอินเทอร์เน็ต";
+        setErrors(newErrors_internetProvider);
 
+    if (!userInfo?.video_name) newErrors_CourseSelection.video_name = "กรุณาเลือกค่ายอินเทอร์เน็ต";
+        setErrors(newErrors_CourseSelection);
     // ถ้ามี error ไม่ให้ไปต่อ
-    if (Object.keys(newErrors).length > 0) return;
+    if (Object.keys(newErrors_internetProvider).length > 0 || Object.keys(newErrors_CourseSelection).length > 0) return;
         // ถ้าครบ setButtonState
         setbuttonstate(false);
         //ใส่ action ของ button 
@@ -105,6 +107,25 @@ export default function RegistForm({ userInfo, setUserInfo, setbuttonstate }) {
           )}
         </div>
 
+        {/* Course Selection */}
+        <div className="flex flex-col">
+          <label className="mb-1 text-gray-600">ค่ายสัญญาณอินเทอเน็ต</label>
+          <select
+            value={userInfo.internet}
+            onChange={handleInternetChange}
+            className={`w-full border rounded-md p-2 bg-gray-100 text-gray-700 
+              ${errors.internet ? "border-red-500" : "border-gray-300"}`}
+          >
+            <option value="">กรุณาเลือกค่ายสัญญาณอินเทอเน็ต</option>
+            <option value="AIS">AIS</option>
+            <option value="TRUE">TRUE</option>
+          </select>
+
+          {/* Error message */}
+          {errors.internet && (
+            <p className="text-red-500 text-sm mt-1">{errors.internet}</p>
+          )}
+        </div>
         {/* Submit Button */}
         <button
           onClick={onClickButton}
