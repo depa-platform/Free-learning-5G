@@ -39,3 +39,14 @@ export async function DB_Name_Checker(userInfo) {
         return false; // fallback if request fails
     }
 }
+
+
+export async function GetCourseData() {
+  try {
+    const response = await axios.get(`${import.meta.env.VITE_BACKEND}/api/getCourse`); // เปลี่ยนเป็น URL ของคุณ
+    return response.data; // คืนค่าเฉพาะข้อมูลจาก API
+  } catch (error) {
+    console.error("Error fetching course data:", error);
+    return null; // หรือ return [] ถ้าอยากให้เป็น array ว่าง
+  }
+}
