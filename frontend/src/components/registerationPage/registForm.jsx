@@ -8,7 +8,7 @@ export default function RegistForm({ userInfo, setUserInfo, setbuttonstate }) {
     setUserInfo((prev) => ({ ...prev, internet: e.target.value }));
   };
   const handleCourseNameChange = (e) => {
-    setUserInfo((prev) => ({ ...prev, video_name: e.target.value }));
+    setUserInfo((prev) => ({ ...prev, file_name: e.target.value }));
   };
 
   const onClickButton = () => {
@@ -18,8 +18,8 @@ export default function RegistForm({ userInfo, setUserInfo, setbuttonstate }) {
           newErrors.internet = "กรุณาเลือกค่ายอินเทอร์เน็ต";
       }
 
-      if (!userInfo?.video_name) {
-          newErrors.video_name = "กรุณาเลือก คอร์สเรียน";
+      if (!userInfo?.file_name) {
+          newErrors.file_name = "กรุณาเลือก คอร์สเรียน";
       }
 
       // ถ้ามี error ไม่ให้ไปต่อ
@@ -30,8 +30,10 @@ export default function RegistForm({ userInfo, setUserInfo, setbuttonstate }) {
 
       // ถ้าครบ setButtonState
       setbuttonstate(false);
+      console.log(userInfo);
       // ใส่ action ของ button
       SubmitAction(userInfo);
+      
   };
 
 
@@ -121,10 +123,10 @@ export default function RegistForm({ userInfo, setUserInfo, setbuttonstate }) {
         <div className="flex flex-col">
           <label className="mb-1 text-gray-600">คอร์สเรียน</label>
           <select
-            value={userInfo.video_name}
+            value={userInfo.file_name}
             onChange={handleCourseNameChange}
             className={`w-full border rounded-md p-2 bg-gray-100 text-gray-700 
-              ${errors.video_name ? "border-red-500" : "border-gray-300"}`}
+              ${errors.file_name ? "border-red-500" : "border-gray-300"}`}
           >
             <option value="">กรุณาเลือก คอร์สเรียน</option>
             <option value="AIS">AIS</option>
@@ -132,8 +134,8 @@ export default function RegistForm({ userInfo, setUserInfo, setbuttonstate }) {
           </select>
 
           {/* Error message */}
-          {errors.video_name && (
-            <p className="text-red-500 text-sm mt-1">{errors.video_name}</p>
+          {errors.file_name && (
+            <p className="text-red-500 text-sm mt-1">{errors.file_name}</p>
           )}
         </div>
         {/* Submit Button */}
