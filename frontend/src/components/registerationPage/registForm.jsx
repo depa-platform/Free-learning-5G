@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { SubmitAction } from "../utils/registerationPage/submit_Action";
+import { SubmitAction } from "../utils/registerationPage/Axios_Action";
 export default function RegistForm({ userInfo, setUserInfo, setbuttonstate }) {
   const [errors, setErrors] = useState({}); // เก็บ error ของแต่ละ field
 

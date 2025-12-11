@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { DB_Name_Checker } from "../components/utils/registerationPage/submit_Action";
+import { DB_Name_Checker } from "../components/utils/registerationPage/Axios_Action";
 import NavbarRegist from "../components/registerationPage/navbarRegister";
 import RegistForm from "../components/registerationPage/registForm";
 import NotiSubmit from "../components/registerationPage/notisubmit";
