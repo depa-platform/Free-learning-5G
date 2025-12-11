@@ -7,23 +7,33 @@ export default function RegistForm({ userInfo, setUserInfo, setbuttonstate }) {
   const handleInternetChange = (e) => {
     setUserInfo((prev) => ({ ...prev, internet: e.target.value }));
   };
+  const handleCourseNameChange = (e) => {
+    setUserInfo((prev) => ({ ...prev, video_name: e.target.value }));
+  };
 
   const onClickButton = () => {
-    let newErrors_internetProvider = {};
-    let newErrors_CourseSelection= {}
-    // ตรวจช่องที่ต้องใส่
-    if (!userInfo?.internet) newErrors_internetProvider.internet = "กรุณาเลือกค่ายอินเทอร์เน็ต";
-        setErrors(newErrors_internetProvider);
+      const newErrors = {};
 
-    if (!userInfo?.video_name) newErrors_CourseSelection.video_name = "กรุณาเลือกค่ายอินเทอร์เน็ต";
-        setErrors(newErrors_CourseSelection);
-    // ถ้ามี error ไม่ให้ไปต่อ
-    if (Object.keys(newErrors_internetProvider).length > 0 || Object.keys(newErrors_CourseSelection).length > 0) return;
-        // ถ้าครบ setButtonState
-        setbuttonstate(false);
-        //ใส่ action ของ button 
-        SubmitAction(userInfo);
+      if (!userInfo?.internet) {
+          newErrors.internet = "กรุณาเลือกค่ายอินเทอร์เน็ต";
+      }
+
+      if (!userInfo?.video_name) {
+          newErrors.video_name = "กรุณาเลือก คอร์สเรียน";
+      }
+
+      // ถ้ามี error ไม่ให้ไปต่อ
+      if (Object.keys(newErrors).length > 0) {
+          setErrors(newErrors);
+          return;
+      }
+
+      // ถ้าครบ setButtonState
+      setbuttonstate(false);
+      // ใส่ action ของ button
+      SubmitAction(userInfo);
   };
+
 
   return (
     <div className="max-w-md mx-auto mt-10 bg-white shadow-md rounded-lg p-6">
@@ -109,21 +119,21 @@ export default function RegistForm({ userInfo, setUserInfo, setbuttonstate }) {
 
         {/* Course Selection */}
         <div className="flex flex-col">
-          <label className="mb-1 text-gray-600">ค่ายสัญญาณอินเทอเน็ต</label>
+          <label className="mb-1 text-gray-600">คอร์สเรียน</label>
           <select
-            value={userInfo.internet}
-            onChange={handleInternetChange}
+            value={userInfo.video_name}
+            onChange={handleCourseNameChange}
             className={`w-full border rounded-md p-2 bg-gray-100 text-gray-700 
-              ${errors.internet ? "border-red-500" : "border-gray-300"}`}
+              ${errors.video_name ? "border-red-500" : "border-gray-300"}`}
           >
-            <option value="">กรุณาเลือกค่ายสัญญาณอินเทอเน็ต</option>
+            <option value="">กรุณาเลือก คอร์สเรียน</option>
             <option value="AIS">AIS</option>
             <option value="TRUE">TRUE</option>
           </select>
 
           {/* Error message */}
-          {errors.internet && (
-            <p className="text-red-500 text-sm mt-1">{errors.internet}</p>
+          {errors.video_name && (
+            <p className="text-red-500 text-sm mt-1">{errors.video_name}</p>
           )}
         </div>
         {/* Submit Button */}
