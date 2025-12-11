@@ -4,7 +4,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import cors from 'cors';
 import registeration from "./Routes/registeration.js";
-
+import CourseSelection from "./Routes/CourseSelection.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -28,7 +28,8 @@ app.use(
 );
 
 app.use(express.json());
-app.use("/api",registeration); // สำหรับ ลงทะเบรยนและเชคลงทะเบียน
+app.use("/api",registeration); // สำหรับ ลงทะเบียนและเชคลงทะเบียน
+app.use("/api",CourseSelection); //สำหรับ ดึงไว้ใช้ Dropdown Course
 const PORT = process.env.SERVER_PORT || 12345;
 const HOST = "0.0.0.0" || "127.0.0.1";
 
