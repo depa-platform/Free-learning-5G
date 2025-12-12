@@ -31,7 +31,7 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            **sudo chown -R ec2-user:ec2-user .**
+            sudo chown -R ec2-user:ec2-user .
             export NVM_DIR="/home/ec2-user/.nvm"
             source "$NVM_DIR/nvm.sh"
             nvm use 20
