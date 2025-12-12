@@ -69,4 +69,19 @@ registeration.get("/getRegist_Info/CheckList", async (req, res) => {
     }
 });
 
+// GET /Check Database
+registeration.get("/getRegist_Info/Check_vdo", async (req, res) => {
+    let {id} = req.query;
+    const [rows] = await sql.query(
+            "SELECT file_name FROM Registeration WHERE id = ?",
+            [id]
+    );
+    if (rows.length > 0) {
+        return res.status(200).json(rows[0]);
+    }else{
+        return res.status(500).json({status : "not found"});
+    }
+});
+
+
 export default registeration;

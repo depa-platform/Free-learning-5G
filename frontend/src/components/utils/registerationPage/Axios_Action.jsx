@@ -50,3 +50,15 @@ export async function GetCourseData() {
     return null; // หรือ return [] ถ้าอยากให้เป็น array ว่าง
   }
 }
+
+export async function Get_vdo_name(id) {
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_BACKEND}/api/getRegist_Info/Check_vdo?id=${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching video name:", error);
+    return null;
+  }
+}
