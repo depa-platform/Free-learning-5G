@@ -31,23 +31,32 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            export NVM_DIR="/home/ec2-user/.nvm"
-            source "$NVM_DIR/nvm.sh"
-            nvm use 20
+                export NVM_DIR="/home/ec2-user/.nvm"
+                source "$NVM_DIR/nvm.sh"
+                nvm use 20
 
-            cd /home/ec2-user/5G-freelerning/Free-learning-5G
-            nvm use 20
-            echo "Cleaning old frontend build..."
-            sudo rm -rf frontend/dist || true
+                # FORCE npm/node path
+                export PATH="$NVM_DIR/versions/node/v20.19.6/bin:$PATH"
 
-            echo "Installing dependencies..."
-            sudo npm install
+                echo "=== DEBUG CHECK ==="
+                which node
+                which npm
+                node -v
+                npm -v
 
-            echo "Building frontend..."
-            sudo npm run build -w frontend
+                cd /home/ec2-user/5G-freelerning/Free-learning-5G
 
-            echo "Restarting docker..."
-            docker-compose down || true
-            docker-compose up -d --build
+                echo "Cleaning old frontend build..."
+                rm -rf frontend/dist || true
 
-            echo "Deployment complete!"
+                echo "Installing dependencies..."
+                npm install
+
+                echo "Building frontend..."
+                npm run build -w frontend
+
+                echo "Restarting docker..."
+                docker-compose down || true
+                docker-compose up -d --build
+
+                echo "Deployment complete!"
