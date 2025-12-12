@@ -10,12 +10,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1) Checkout the code
       - name: Checkout the code
         uses: actions/checkout@v3
 
-      # 2) ส่งไฟล์ทั้งหมดขึ้น EC2
-      - name: Deploy to EC2 instance
+      # 1) Upload files to EC2
+      - name: Deploy to my EC2 instance
         uses: easingthemes/ssh-deploy@v2.1.5
         env:
           SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
@@ -24,48 +23,41 @@ jobs:
           SOURCE: "./"
           TARGET: "/home/ec2-user/5G-freelerning/Free-learning-5G"
 
-      # 3) รันคำสั่งบน EC2 (build + restart docker)
-      - name: Execute remote commands
+      # 2) Build + restart Docker
+      - name: Executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.HOST_DNS }}
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # โหลด NVM และใช้ Node 20
             export NVM_DIR="/home/ec2-user/.nvm"
             source "$NVM_DIR/nvm.sh"
-            nvm use 20
+            sudo nvm use 20
 
-            # Force PATH สำหรับ sudo
+            # Force PATH to use Node 20 npm
             export PATH="$NVM_DIR/versions/node/v20.19.6/bin:$PATH"
 
-            # Debug ตรวจสอบ Node / npm
             echo "=== DEBUG CHECK ==="
             which node
             which npm
             node -v
             npm -v
 
-            # เข้าโฟลเดอร์โปรเจค
             cd /home/ec2-user/5G-freelerning/Free-learning-5G/frontend
 
-            # ลบ build, node_modules และ lockfile เก่า
             echo "Cleaning old frontend build & lockfiles..."
-            sudo -E rm -rf dist node_modules package-lock.json frontend/package-lock.json backend/package-lock.json || true
+            sudo rm -rf frontend/dist node_modules package-lock.json frontend/package-lock.json backend/package-lock.json || true
 
-            # ติดตั้ง dependencies ใหม่ด้วย Node 20
-            echo "Installing frontend dependencies..."
-            sudo -E npm install
+            echo "Installing frontend dependencies (Node 20)..."
+            sudo npm install
 
-            # Build frontend
             echo "Building frontend..."
-            sudo -E npm run build
+            sudo npm run build
 
-            # Restart docker-compose
             echo "Restarting docker..."
             cd ..
-            sudo -E docker-compose down || true
-            sudo -E docker-compose up -d --build
+            docker-compose down || true
+            docker-compose up -d --build
 
             echo "Deployment complete!"
