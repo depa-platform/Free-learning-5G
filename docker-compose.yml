@@ -16,11 +16,11 @@ services:
   backend:
     image: node:20
     container_name: 5g-backend
-    working_dir: /app
+    working_dir: /app/backend
     volumes:
-      - ./backend:/app/backend
-      - /app/node_modules
-      - ./.env:/app/.env
+    - ./backend:/app/backend
+    - /app/node_modules
+    - ./.env:/app/.env
       
     command: >
       sh -c "npm install && npm run start"
