@@ -13,7 +13,7 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v3
 
-      # 1) ส่งไฟล์ทั้งหมดขึ้น EC2
+      # 1) Upload files to EC2
       - name: Deploy to my EC2 instance
         uses: easingthemes/ssh-deploy@v2.1.5
         env:
@@ -23,7 +23,7 @@ jobs:
           SOURCE: "./"
           TARGET: "/home/ec2-user/5G-freelerning/Free-learning-5G"
 
-      # 2) รันคำสั่งบน EC2 (build + restart docker)
+      # 2) Build + restart Docker
       - name: Executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
         with:
@@ -31,12 +31,21 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            sudo chown -R ec2-user:ec2-user .
+            export NVM_DIR="/home/ec2-user/.nvm"
+            source "$NVM_DIR/nvm.sh"
+            nvm use 20
+
+            echo "=== DEBUG CHECK ==="
+            which node
+            which npm
+            node -v
+            npm -v
+
             cd /home/ec2-user/5G-freelerning/Free-learning-5G
+            
 
-            echo "Cleaning old frontend build..."
-            rm -rf frontend/dist || true
-
-            echo "Installing dependencies..."
+            echo "Installing frontend dependencies (Node 20)..."
             npm install
 
             echo "Building frontend..."
