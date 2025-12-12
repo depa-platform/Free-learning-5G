@@ -1,7 +1,22 @@
-import React, { useState } from "react";
+import React, { useState , useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { Get_vdo_url_status ,DoneVDO } from "../utils/registerationPage/Axios_Action";
 
 export default function VideoView({ userInfo }) {
   const [isFinished, setIsFinished] = useState(false);
+  const [VideoURLs, setVideoURLs] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!userInfo || !userInfo.id) return;
+
+    const fetchVideoName = async () => {
+      const urls = await Get_vdo_url_status(userInfo.id);
+      setVideoURLs(urls.urls);
+    };
+
+    fetchVideoName();
+  }, [userInfo]);
 
   return (
     <div className="p-4 bg-gray-100 min-h-screen">
@@ -10,31 +25,32 @@ export default function VideoView({ userInfo }) {
         Notification Submit Page
       </h1>
 
-      {/* Video Frame - centered horizontally */}
+      {/* Video Frame */}
       <div className="w-full max-w-3xl bg-black rounded-lg overflow-hidden shadow-lg mx-auto mb-4">
         <video
-          src="https://y3x9rur5qb.execute-api.ap-southeast-1.amazonaws.com/dev/depa-5g-bucket/vdo1.mp4"
+          src={`${VideoURLs}`}
           controls
           className="w-full h-auto"
-          onEnded={() => setIsFinished(true)}   // 👉 วิดีโอจบแล้วให้โชว์ปุ่ม
+          onEnded={() => setIsFinished(true)}
         >
           Your browser does not support the video tag.
         </video>
       </div>
 
-      {/* Optional: Video info */}
       {userInfo && (
         <p className="text-gray-700 text-center mb-4">
           User: {userInfo.name} {userInfo.surname}
         </p>
       )}
 
-      {/* Next Button - จะปรากฏเฉพาะตอนวิดีโอเล่นจบ */}
       {isFinished && (
         <div className="text-center">
           <button
             className="px-6 py-3 bg-green-600 text-white rounded-lg shadow-md hover:bg-green-700 transition"
-            onClick={() => console.log("ไปหน้าถัดไป")}
+            onClick={async () => { 
+              await DoneVDO(userInfo.id, 1);
+              navigate("/congrat");
+            }}
           >
             ไปหน้าถัดไป
           </button>

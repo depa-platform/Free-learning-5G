@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { DB_Name_Checker } from "../components/utils/registerationPage/Axios_Action";
+import { Navigate, useNavigate } from "react-router-dom";
+import {
+  DB_Name_Checker,
+  Get_vdo_url_status
+} from "../components/utils/registerationPage/Axios_Action";
+
 import NavbarRegist from "../components/registerationPage/navbarRegister";
 import RegistForm from "../components/registerationPage/registForm";
-import NotiSubmit from "../components/registerationPage/notisubmit";
 import VideoView from "../components/registerationPage/video";
+
 export default function RegistrationForm() {
   const [userInfo, setUserInfo] = useState({
     name: "John",
@@ -13,49 +18,75 @@ export default function RegistrationForm() {
     dob: "1990-01-01",
     phoneNumber: "0933456790",
     internet: "",
-    file_name:"",
-    success:0
+    file_name: ""
   });
 
-  const [buttonstate, setbuttonstate] = useState(true);
-  const [isRegistered, setIsRegistered] = useState(null); // null = ยังไม่เช็ค
+  // UI states
+  const [buttonState, setButtonState] = useState(true);
 
+  // null = loading, true/false = already checked
+  const [isRegistered, setIsRegistered] = useState(null);
+
+  // null = loading, true = watched, false = not watched
+  const [isDoneVDO, setIsDoneVDO] = useState(null);
+
+  // ===== GET DATA FROM SERVER =====
   useEffect(() => {
-    async function checkDB() {
-      const result = await DB_Name_Checker(userInfo);
-      setIsRegistered(result);
+    async function loadData() {
+      try {
+        // เช็คว่าลงทะเบียนหรือยัง
+        const regStatus = await DB_Name_Checker(userInfo);
+        setIsRegistered(regStatus);
+
+        // เช็ควิดีโอดูเสร็จหรือยัง
+        const vdoStatus = await Get_vdo_url_status(userInfo.id);
+        setIsDoneVDO(Boolean(vdoStatus?.IsSuccess));
+
+      } catch (error) {
+        console.error("Error loading registration data:", error);
+      }
     }
-    checkDB();
+
+    loadData();
   }, [userInfo]);
 
+  // ===== UI RENDER LOGIC =====
   return (
     <>
-    {/* Logic :
-        เชคว่าได้มีการลงทะเบียนรึยัง 
-          ถ้ายัง ให้ไป ลงทะเบียนก่อน
-          ถ้าใช่ ให้ไป ดูคลิปเลย
-
-          ดูจบมั้ย
-            ดูจบ :   ไป แจ้งเตือนรุ้นรางวัล
-            ดูไปจบ : ไป ดูวิดีโอ
-
-    */}
       <NavbarRegist />
+
+      {/* 1) Loading register status */}
       {isRegistered === null ? (
-        <h1>กำลังเช็คข้อมูล...</h1>
-      ) : isRegistered ? (                            //เชค ว่าได้ลงทะเบียนมาในระบบรึยัง ?
-        //ดูคลิป  ( Component )                       
-        //<h1>ไปหน้าที่เป็นว่าอัพโหลดเอกสาร certificate</h1>
-        <VideoView userInfo={userInfo}/>
-      ) : buttonstate ? (
-        <RegistForm 
-          userInfo={userInfo} 
-          setUserInfo={setUserInfo} 
-          setbuttonstate={setbuttonstate}
-        />
+        <h1 className="text-center mt-10">กำลังเช็คข้อมูล...</h1>
       ) : (
-        //ดูคลิป  ( Component )
-        <VideoView userInfo={userInfo}/>
+
+        /* 2) ถ้าลงทะเบียนแล้ว */
+        isRegistered ? (
+          isDoneVDO === null ? (
+            // 2.0 Loading video status
+            <h1 className="text-center mt-10">กำลังโหลดสถานะวิดีโอ...</h1>
+          ) : isDoneVDO === true ? (
+            // 2.1 ดูแล้ว
+            <Navigate to="/congrat" replace />
+          ) : (
+            // 2.2 ยังไม่ดู → ดูวิดีโอ
+            <VideoView userInfo={userInfo} />
+          )
+
+        ) : (
+
+          /* 3) ยังไม่ลงทะเบียน */
+          buttonState ? (
+            <RegistForm
+              userInfo={userInfo}
+              setUserInfo={setUserInfo}
+              setbuttonstate={setButtonState}
+            />
+          ) : (
+            /* 4) ดูวิดีโอที่เลือกมาจากการกดลงทะเบียน */
+            <VideoView userInfo={userInfo} />
+          )
+        )
       )}
     </>
   );

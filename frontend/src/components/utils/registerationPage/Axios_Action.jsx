@@ -31,7 +31,7 @@ export async function DB_Name_Checker(userInfo) {
         const response = await axios.get(backendUrl, { params: { id: userInfo.id } });
 
         // Server returns JSON like { exists: true/false }
-        console.log(response.data.status)
+        //console.log(response.data.status)
         return response.data.status;
 
     } catch (error) {
@@ -48,5 +48,33 @@ export async function GetCourseData() {
   } catch (error) {
     console.error("Error fetching course data:", error);
     return null; // หรือ return [] ถ้าอยากให้เป็น array ว่าง
+  }
+}
+
+export async function Get_vdo_url_status(id) {
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_BACKEND}/api/getRegist_Info/Check_vdo?id=${id}`
+    );
+    //console.log(response)
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching video name:", error);
+    return null;
+  }
+}
+
+export async function DoneVDO(id) {
+  try {
+    const response = await axios.post(
+      `${import.meta.env.VITE_BACKEND}/api/getRegist_Info/Check_vdo/isDone?id=${id}&Issuccess=${1}`
+    );
+
+    //console.log("DoneVDO Response:", response);
+    return response.data;
+
+  } catch (error) {
+    console.error("Error updating VDO status:", error);
+    return null;
   }
 }
