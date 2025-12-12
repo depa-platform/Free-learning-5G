@@ -31,12 +31,10 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            **sudo chown -R ec2-user:ec2-user .**
             export NVM_DIR="/home/ec2-user/.nvm"
             source "$NVM_DIR/nvm.sh"
-            sudo nvm use 20
-
-            # Force PATH to use Node 20 npm
-            export PATH="$NVM_DIR/versions/node/v20.19.6/bin:$PATH"
+            nvm use 20
 
             echo "=== DEBUG CHECK ==="
             which node
@@ -44,19 +42,16 @@ jobs:
             node -v
             npm -v
 
-            cd /home/ec2-user/5G-freelerning/Free-learning-5G/frontend
-
-            echo "Cleaning old frontend build & lockfiles..."
-            sudo rm -rf frontend/dist node_modules package-lock.json frontend/package-lock.json backend/package-lock.json || true
+            cd /home/ec2-user/5G-freelerning/Free-learning-5G
+            
 
             echo "Installing frontend dependencies (Node 20)..."
-            sudo npm install
+            npm install
 
             echo "Building frontend..."
-            sudo npm run build
+            npm run build -w frontend
 
             echo "Restarting docker..."
-            cd ..
             docker-compose down || true
             docker-compose up -d --build
 
