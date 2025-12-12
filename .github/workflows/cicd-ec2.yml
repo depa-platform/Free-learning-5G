@@ -13,7 +13,7 @@ jobs:
       - name: Checkout the code
         uses: actions/checkout@v3
 
-      # 1) ส่งไฟล์ทั้งหมดขึ้น EC2
+      # 1) Upload files to EC2
       - name: Deploy to my EC2 instance
         uses: easingthemes/ssh-deploy@v2.1.5
         env:
@@ -23,7 +23,7 @@ jobs:
           SOURCE: "./"
           TARGET: "/home/ec2-user/5G-freelerning/Free-learning-5G"
 
-      # 2) รันคำสั่งบน EC2 (build + restart docker)
+      # 2) Build + restart Docker
       - name: Executing remote ssh commands using ssh key
         uses: appleboy/ssh-action@master
         with:
@@ -31,32 +31,33 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-                export NVM_DIR="/home/ec2-user/.nvm"
-                source "$NVM_DIR/nvm.sh"
-                sudo nvm use 20
+            export NVM_DIR="/home/ec2-user/.nvm"
+            source "$NVM_DIR/nvm.sh"
+            sudo nvm use 20
 
-                # FORCE npm/node path
-                export PATH="$NVM_DIR/versions/node/v20.19.6/bin:$PATH"
+            # Force PATH to use Node 20 npm
+            export PATH="$NVM_DIR/versions/node/v20.19.6/bin:$PATH"
 
-                echo "=== DEBUG CHECK ==="
-                which node
-                which npm
-                node -v
-                npm -v
+            echo "=== DEBUG CHECK ==="
+            which node
+            which npm
+            node -v
+            npm -v
 
-                cd /home/ec2-user/5G-freelerning/Free-learning-5G
+            cd /home/ec2-user/5G-freelerning/Free-learning-5G/frontend
 
-                echo "Cleaning old frontend build..."
-                sudo rm -rf frontend/dist || true
+            echo "Cleaning old frontend build & lockfiles..."
+            sudo rm -rf frontend/dist node_modules package-lock.json frontend/package-lock.json backend/package-lock.json || true
 
-                echo "Installing dependencies..."
-                sudo npm install
+            echo "Installing frontend dependencies (Node 20)..."
+            sudo npm install
 
-                echo "Building frontend..."
-                sudo npm run build -w frontend
+            echo "Building frontend..."
+            sudo npm run build
 
-                echo "Restarting docker..."
-                docker-compose down || true
-                docker-compose up -d --build
+            echo "Restarting docker..."
+            cd ..
+            docker-compose down || true
+            docker-compose up -d --build
 
-                echo "Deployment complete!"
+            echo "Deployment complete!"
