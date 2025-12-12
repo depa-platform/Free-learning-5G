@@ -51,7 +51,7 @@ export async function GetCourseData() {
   }
 }
 
-export async function Get_vdo_name(id) {
+export async function Get_vdo_url(id) {
   try {
     const response = await axios.get(
       `${import.meta.env.VITE_BACKEND}/api/getRegist_Info/Check_vdo?id=${id}`

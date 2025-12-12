@@ -1,19 +1,18 @@
 import React, { useState , useEffect } from "react";
-import { Get_vdo_name } from "../utils/registerationPage/Axios_Action";
-
+import { Get_vdo_url } from "../utils/registerationPage/Axios_Action";
 export default function VideoView({ userInfo }) {
   const [isFinished, setIsFinished] = useState(false);
 
-  const [videoName, setVideoName] = useState(null);
+  const [VideoURLs, setVideoURLs] = useState(null);
 
   useEffect(() => {
     if (!userInfo || !userInfo.id) return;
-
+    //chagne
     const fetchVideoName = async () => {
-      const data = await Get_vdo_name(userInfo.id);
-      if (data && data.file_name) {
-        setVideoName(data.file_name);
-      }
+      const urls = await Get_vdo_url(userInfo.id);
+      
+      setVideoURLs(urls);
+      
     };
 
     fetchVideoName();
@@ -29,7 +28,7 @@ export default function VideoView({ userInfo }) {
       {/* Video Frame - centered horizontally */}
       <div className="w-full max-w-3xl bg-black rounded-lg overflow-hidden shadow-lg mx-auto mb-4">
         <video
-          src={`https://y3x9rur5qb.execute-api.ap-southeast-1.amazonaws.com/dev/depa-5g-bucket/${videoName}.mp4`}
+          src={`${VideoURLs}`}
           controls
           className="w-full h-auto"
           onEnded={() => setIsFinished(true)}   // 👉 วิดีโอจบแล้วให้โชว์ปุ่ม

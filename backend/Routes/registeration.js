@@ -1,5 +1,6 @@
 import sql from "../utils/db.js";
 import { Router } from "express";
+import { getSignedVideoURL } from "../utils/getSignedURL.js";
 
 const registeration = Router();
 // POST /Upload Info
@@ -77,7 +78,9 @@ registeration.get("/getRegist_Info/Check_vdo", async (req, res) => {
             [id]
     );
     if (rows.length > 0) {
-        return res.status(200).json(rows[0]);
+        let url = await getSignedVideoURL(rows[0].file_name+".mp4")
+        //console.log(url);
+        return res.status(200).json(url);
     }else{
         return res.status(500).json({status : "not found"});
     }
