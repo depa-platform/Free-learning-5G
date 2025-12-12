@@ -31,7 +31,7 @@ app.use(express.json());
 app.use("/api",registeration); // สำหรับ ลงทะเบียนและเชคลงทะเบียน
 app.use("/api",CourseSelection); //สำหรับ ดึงไว้ใช้ Dropdown Course
 const PORT = process.env.SERVER_PORT || 12345;
-const HOST = "0.0.0.0" || "127.0.0.1";
+const HOST = process.env.HOST || "127.0.0.1";
 
 app.listen(PORT, HOST, () => {
   console.log(`Server running at http://${HOST}:${PORT}`);

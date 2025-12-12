@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { DB_Name_Checker } from "../components/utils/registerationPage/submit_Action";
+import { DB_Name_Checker } from "../components/utils/registerationPage/Axios_Action";
 import NavbarRegist from "../components/registerationPage/navbarRegister";
 import RegistForm from "../components/registerationPage/registForm";
 import NotiSubmit from "../components/registerationPage/notisubmit";
-
+import VideoView from "../components/registerationPage/video";
 export default function RegistrationForm() {
   const [userInfo, setUserInfo] = useState({
     name: "John",
@@ -13,7 +13,7 @@ export default function RegistrationForm() {
     dob: "1990-01-01",
     phoneNumber: "0933456790",
     internet: "",
-    video_name:"",
+    file_name:"",
     success:0
   });
 
@@ -45,7 +45,8 @@ export default function RegistrationForm() {
         <h1>กำลังเช็คข้อมูล...</h1>
       ) : isRegistered ? (                            //เชค ว่าได้ลงทะเบียนมาในระบบรึยัง ?
         //ดูคลิป  ( Component )                       
-        <h1>ไปหน้าที่เป็นว่าอัพโหลดเอกสาร certificate</h1>
+        //<h1>ไปหน้าที่เป็นว่าอัพโหลดเอกสาร certificate</h1>
+        <VideoView userInfo={userInfo}/>
       ) : buttonstate ? (
         <RegistForm 
           userInfo={userInfo} 
@@ -54,7 +55,7 @@ export default function RegistrationForm() {
         />
       ) : (
         //ดูคลิป  ( Component )
-        <h1>ไปหน้าที่เป็นว่าอัพโหลดเอกสาร certificate</h1>
+        <VideoView userInfo={userInfo}/>
       )}
     </>
   );
