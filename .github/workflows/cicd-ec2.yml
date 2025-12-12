@@ -32,9 +32,9 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd /home/ec2-user/5G-freelerning/Free-learning-5G
-            sudo su
+     
             echo "Cleaning old frontend build..."
-            rm -rf frontend/dist || true
+            sudo rm -rf frontend/dist || true
 
             echo "Installing dependencies..."
             npm install
