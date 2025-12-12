@@ -33,7 +33,7 @@ jobs:
           script: |
                 export NVM_DIR="/home/ec2-user/.nvm"
                 source "$NVM_DIR/nvm.sh"
-                nvm use 20
+                sudo nvm use 20
 
                 # FORCE npm/node path
                 export PATH="$NVM_DIR/versions/node/v20.19.6/bin:$PATH"
@@ -47,13 +47,13 @@ jobs:
                 cd /home/ec2-user/5G-freelerning/Free-learning-5G
 
                 echo "Cleaning old frontend build..."
-                rm -rf frontend/dist || true
+                sudo rm -rf frontend/dist || true
 
                 echo "Installing dependencies..."
-                npm install
+                sudo npm install
 
                 echo "Building frontend..."
-                npm run build -w frontend
+                sudo npm run build -w frontend
 
                 echo "Restarting docker..."
                 docker-compose down || true
