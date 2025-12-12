@@ -5,11 +5,13 @@ import './index.css'
 //import 'bootstrap/dist/css/bootstrap.min.css';
 import Root from './pages/RootPages'
 import RegistrationForm from './pages/registeration'
+import Congrat from './pages/congrat_vdo'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <BrowserRouter>
     <Routes>
       <Route path="/" element={<Root />} />
       <Route path="/Regist" element={<RegistrationForm/> } />
-    </Routes>
+      <Route path="/congrat" element={<Congrat/>}/>
+    </Routes>   
   </BrowserRouter>
 )
