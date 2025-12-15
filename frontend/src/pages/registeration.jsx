@@ -38,6 +38,9 @@ export default function RegistrationForm() {
         const regStatus = await DB_Name_Checker(userInfo);
         setIsRegistered(regStatus);
 
+        console.log(userInfo);
+        console.log(regStatus);
+
         // เช็ควิดีโอดูเสร็จหรือยัง
         const vdoStatus = await Get_vdo_url_status(userInfo.id);
         setIsDoneVDO(Boolean(vdoStatus?.IsSuccess));
