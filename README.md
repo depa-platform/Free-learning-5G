@@ -1,6 +1,6 @@
 # Free-learning-5G
 
-A web app for 5G learning .
+A web app for 5G learning naja.
 
 ## Tech Stack
 
