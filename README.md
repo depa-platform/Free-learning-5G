@@ -48,12 +48,16 @@ docker-compose up --build -d
 - **Backend:** Accessible at `http://localhost:12345`
 
 ### Option 2: Manual Setup
-
+#### install All denpendencies in package.json
+1. Install
+   ```bash
+    npm install [dependendencies] -w backend
+    ```
 #### Backend
 
 1.  Install dependencies ( if new for use in Backend ):
     ```bash
-    npm install -w backend
+    npm install [dependendencies] -w backend
     ```
 2.  Start the server:
     ```bash
@@ -64,7 +68,7 @@ docker-compose up --build -d
 
 1.  Install dependencies ( if new for use in Frontend ):
     ```bash
-    npm install
+    npm install [dependendencies] -w frontend
     ```
 2.  Start the development server:
     ```bash
