@@ -51,7 +51,7 @@ docker-compose up --build -d
 #### install All denpendencies in package.json
 1. Install
    ```bash
-    npm install [dependendencies] -w backend
+    npm install
     ```
 #### Backend
 
