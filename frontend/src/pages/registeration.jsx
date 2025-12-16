@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate, useNavigate , useSearchParams } from "react-router-dom";
 import {
   DB_Name_Checker,
   Get_vdo_url_status
@@ -20,6 +20,8 @@ export default function RegistrationForm() {
     internet: "",
     file_name: ""
   });
+  //Param Serach QueryString
+  const [searchParams] = useSearchParams();
 
   // UI states
   const [buttonState, setButtonState] = useState(true);
@@ -32,6 +34,14 @@ export default function RegistrationForm() {
 
   // ===== GET DATA FROM SERVER =====
   useEffect(() => {
+    let mToken = searchParams.get("mToken");
+    let appID = searchParams.get("appId");
+
+    if (!window.czpSdk) {
+      console.error("CZP SDK not loaded");
+      return;
+    }
+
     async function loadData() {
       try {
         // เช็คว่าลงทะเบียนหรือยัง
@@ -49,8 +59,9 @@ export default function RegistrationForm() {
         console.error("Error loading registration data:", error);
       }
     }
-
     loadData();
+    console.log("CZP appId:", window.czpSdk.getAppId());
+    console.log("CZP token:", window.czpSdk.getToken());
   }, [userInfo]);
 
   // ===== UI RENDER LOGIC =====
