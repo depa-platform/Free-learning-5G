@@ -127,7 +127,7 @@ export default function RegistForm({ userInfo, setUserInfo, setbuttonstate }) {
             className="w-full border border-gray-300 rounded-md p-2 bg-gray-100 text-gray-700 mb-2"
           />
         </div>
-        
+
 
         {/* Internet Provider */}
         <div className="flex flex-col">
