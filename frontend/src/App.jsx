@@ -3,7 +3,7 @@ export default function App(){
         <>
         <div className="flex justify-center items-center min-h-screen">
             <h1 className="text-4xl font-bold text-blue-600">
-                Welcome to 5G
+                Welcome to 5G Naja
             </h1>
         </div>
         </>
