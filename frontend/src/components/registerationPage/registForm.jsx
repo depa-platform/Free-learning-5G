@@ -36,7 +36,7 @@ export default function RegistForm({ userInfo, setUserInfo, setbuttonstate }) {
   }, []);
 
   // handle submit button
-  const onClickButton = () => {
+  const onClickButton = async () => {
     const newErrors = {};
 
     if (!userInfo?.internet) {
@@ -50,10 +50,10 @@ export default function RegistForm({ userInfo, setUserInfo, setbuttonstate }) {
       setErrors(newErrors);
       return;
     }
-
+    await SubmitAction(userInfo);
     setbuttonstate(false);
     console.log(userInfo);
-    SubmitAction(userInfo);
+
   };
 
   return (
@@ -127,7 +127,7 @@ export default function RegistForm({ userInfo, setUserInfo, setbuttonstate }) {
             className="w-full border border-gray-300 rounded-md p-2 bg-gray-100 text-gray-700 mb-2"
           />
         </div>
-        
+
 
         {/* Internet Provider */}
         <div className="flex flex-col">

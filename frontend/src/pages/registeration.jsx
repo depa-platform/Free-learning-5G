@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Navigate, useNavigate , useSearchParams } from "react-router-dom";
+import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import {
   DB_Name_Checker,
   Get_vdo_url_status
@@ -13,7 +13,7 @@ export default function RegistrationForm() {
   const [userInfo, setUserInfo] = useState({
     name: "John",
     surname: "Doe",
-    id: "12345679",
+    id: "123456797",
     email: "john.doe@example.com",
     dob: "1990-01-01",
     phoneNumber: "0933456790",
@@ -52,8 +52,12 @@ export default function RegistrationForm() {
         console.log(regStatus);
 
         // เช็ควิดีโอดูเสร็จหรือยัง
-        const vdoStatus = await Get_vdo_url_status(userInfo.id);
-        setIsDoneVDO(Boolean(vdoStatus?.IsSuccess));
+        if (regStatus) {
+          const vdoStatus = await Get_vdo_url_status(userInfo.id);
+          setIsDoneVDO(Boolean(vdoStatus?.IsSuccess));
+        } else {
+          setIsDoneVDO(false);
+        }
 
       } catch (error) {
         console.error("Error loading registration data:", error);
