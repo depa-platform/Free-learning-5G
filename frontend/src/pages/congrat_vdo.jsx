@@ -12,77 +12,75 @@ export default function Congrat() {
     }, []);
 
     return (
-        <>
+        <div className="min-h-screen bg-gray-50 flex flex-col font-sans">
             <NavbarRegist />
 
-            {/* Background */}
-            <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-green-50 flex items-center justify-center px-4 py-12">
+            <div className="flex-1 flex items-center justify-center p-4 relative overflow-hidden">
+                {/* Background Decorations */}
+                <div className="absolute inset-0 pointer-events-none">
+                    <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-emerald-100/40 rounded-full blur-[100px] animate-blob"></div>
+                    <div className="absolute top-[20%] right-[-10%] w-[500px] h-[500px] bg-green-100/40 rounded-full blur-[100px] animate-blob animation-delay-2000"></div>
+                    <div className="absolute bottom-[-10%] left-[20%] w-[600px] h-[600px] bg-teal-50/50 rounded-full blur-[120px] animate-blob animation-delay-4000"></div>
+                </div>
 
-                {/* Card */}
                 <div
                     className={`
-                        max-w-md w-full bg-white rounded-2xl shadow-lg border border-gray-100 p-8
+                        relative z-10 w-full max-w-lg bg-white rounded-xl shadow-xl shadow-slate-200/50 border border-slate-200 p-8 md:p-10 text-center
                         transform transition-all duration-700 ease-out
-                        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}
+                        ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}
                     `}
                 >
-                    {/* Success Icon */}
-                    <div className="flex justify-center mb-6">
-                        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-                            <svg
-                                className="w-8 h-8 text-green-600"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2.5}
-                                    d="M5 13l4 4L19 7"
-                                />
+                    {/* Header Strip or Icon */}
+                    <div className="mb-6 flex justify-center">
+                        <div className="w-20 h-20 rounded-full bg-emerald-50 flex items-center justify-center border-4 border-white shadow-sm ring-1 ring-slate-100">
+                            <svg className="w-10 h-10 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                             </svg>
                         </div>
                     </div>
 
-                    {/* Title */}
-                    <h1 className="text-2xl font-bold text-gray-800 text-center mb-2">
-                        ยินดีด้วย! 🎉
+                    <h1 className="text-2xl font-bold text-slate-800 mb-2">
+                        บันทึกผลการอบรมเรียบร้อยแล้ว
                     </h1>
 
-                    {/* Subtitle */}
-                    <p className="text-gray-600 text-center mb-6">
-                        คุณได้ดูวิดีโอเรียบร้อยแล้ว
+                    <p className="text-slate-500 mb-8">
+                        ระบบได้ทำการบันทึกข้อมูลการเข้าชมวิดีโอของท่านเข้าสู่ฐานข้อมูลแล้ว
                     </p>
 
-                    {/* Divider */}
-                    <div className="w-12 h-1 bg-green-500 mx-auto rounded-full mb-6"></div>
-
-                    {/* Message */}
-                    <div className="bg-gray-50 rounded-xl p-4 mb-6">
-                        <p className="text-gray-700 text-center text-sm">
-                            ขอบคุณที่เข้าร่วมโครงการ<br />
-                            <span className="font-medium text-green-600">รอประกาศรางวัลนะครับ</span>
-                        </p>
+                    <div className="bg-slate-50 border border-slate-200 rounded-lg p-5 mb-8 text-left">
+                        <div className="flex items-start gap-4">
+                            <div className="flex-shrink-0 mt-0.5">
+                                <svg className="w-5 h-5 text-emerald-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 className="font-semibold text-slate-900 text-sm">สถานะ: ดำเนินการเสร็จสิ้น</h3>
+                                <p className="text-sm text-slate-500 mt-1 leading-relaxed">
+                                    ขอบคุณสำหรับการเข้าร่วมโครงการ 5G Learning Platform <br />
+                                    โปรดรอติดตามการประกาศผลรางวัลผ่านช่องทางประชาสัมพันธ์
+                                </p>
+                            </div>
+                        </div>
                     </div>
 
-                    {/* Info */}
-                    <div className="flex items-center justify-center gap-2 text-xs text-gray-400 mb-6">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>บันทึกข้อมูลเรียบร้อยแล้ว</span>
-                    </div>
-
-                    {/* Button */}
                     <button
                         onClick={() => navigate("/")}
-                        className="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-xl transition-all duration-200 hover:shadow-md"
+                        className="w-full py-3 px-4 bg-emerald-700 hover:bg-emerald-800 text-white font-medium rounded-lg shadow-sm transition-colors duration-200 flex items-center justify-center gap-2"
                     >
-                        กลับหน้าหลัก
+                        <span>กลับสู่หน้าหลัก</span>
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
                     </button>
+
+                    <div className="mt-8 border-t border-slate-100 pt-4">
+                        <p className="text-xs text-slate-400 uppercase tracking-wider">
+                            Official Training Record
+                        </p>
+                    </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 } 
