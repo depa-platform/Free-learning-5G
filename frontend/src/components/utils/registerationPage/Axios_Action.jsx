@@ -78,3 +78,8 @@ export async function DoneVDO(id) {
     return null;
   }
 }
+
+export async function getThangRatInfo(AppId,mToken){
+  
+  return ;
+}
