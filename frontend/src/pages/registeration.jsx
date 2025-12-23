@@ -15,14 +15,14 @@ const formatDOB = (s) =>
 
 export default function RegistrationForm() {
   const [userInfo, setUserInfo] = useState({
-    name: "",
-    surname: "",
-    id: "",
-    email: "",
-    dob: "",
-    phoneNumber: "",
-    internet: "",
-    file_name: ""
+    name: "ชื่อ",
+    surname: "นามสกุล",
+    id: "เลขบัตรประชาชน",
+    email: "อีเมล",
+    dob: "วว ดด ปป",
+    phoneNumber: "เบอร์โทรศัพท์",
+    internet: "ค่ายสัญญาณ",
+    file_name: "คลิปวิดีโอ"
   });
   //Param Serach QueryString
   const [searchParams] = useSearchParams();
@@ -55,12 +55,12 @@ export default function RegistrationForm() {
 
       setUserInfo((prev) => ({
         ...prev,
-        name: p.firstName || "",
-        surname: p.lastName || "",
-        id: p.citizenId || "",
-        email: p.email || "",
-        dob: formatDOB(p.dateOfBirthString),
-        phoneNumber: p.mobile || "",
+        name: p.firstName || "ชื่อ",
+        surname: p.lastName || "นามสกุล",
+        id: p.citizenId || "เลขบัตรประชาชน",
+        email: p.email || "อีเมล",
+        dob: formatDOB(p.dateOfBirthString) || "วว ดด ปป",
+        phoneNumber: p.mobile || "เบอร์โทรศัพท์",
       }));
     })();
   }, [searchParams]);
