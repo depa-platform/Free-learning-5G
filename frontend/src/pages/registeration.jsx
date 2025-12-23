@@ -1,27 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import {
   DB_Name_Checker,
-  Get_vdo_url_status
+  Get_vdo_url_status,
+  getThangRatInfo
 } from "../components/utils/registerationPage/Axios_Action";
 
 import NavbarRegist from "../components/registerationPage/navbarRegister";
 import RegistForm from "../components/registerationPage/registForm";
 import VideoView from "../components/registerationPage/video";
 
+const formatDOB = (s) =>
+  s && s.length === 8 ? `${s.slice(0, 4)}-${s.slice(4, 6)}-${s.slice(6, 8)}` : "";
+
 export default function RegistrationForm() {
   const [userInfo, setUserInfo] = useState({
-    name: "John",
-    surname: "Doe",
-    id: "781119039",
-    email: "john.doe@example.com",
-    dob: "1990-01-01",
-    phoneNumber: "0933456790",
+    name: "",
+    surname: "",
+    id: "",
+    email: "",
+    dob: "",
+    phoneNumber: "",
     internet: "",
     file_name: ""
   });
   //Param Serach QueryString
   const [searchParams] = useSearchParams();
+  const calledRef = useRef(false);
 
   // UI states
   const [buttonState, setButtonState] = useState(true);
@@ -32,41 +37,54 @@ export default function RegistrationForm() {
   // null = loading, true = watched, false = not watched
   const [isDoneVDO, setIsDoneVDO] = useState(null);
 
-  // ===== GET DATA FROM SERVER =====
+
+
+  //  ดึงข้อมูลจากmk'รัฐ (ครั้งเดียว)
   useEffect(() => {
-    let mToken = searchParams.get("mToken");
-    let appID = searchParams.get("appId");
+    if (calledRef.current) return;
+    calledRef.current = true;
 
-    if (!window.czpSdk) {
-      console.error("CZP SDK not loaded");
-      return;
-    }
+    (async () => {
+      const appId = window.czpSdk?.getAppId?.() || searchParams.get("appId");
+      const mToken = window.czpSdk?.getToken?.() || searchParams.get("mToken");
+      if (!appId || !mToken) return;
 
-    async function loadData() {
+      const data = await getThangRatInfo(appId, mToken);
+      const p = data?.result;
+      if (!p) return;
+
+      setUserInfo((prev) => ({
+        ...prev,
+        name: p.firstName || "",
+        surname: p.lastName || "",
+        id: p.citizenId || "",
+        email: p.email || "",
+        dob: formatDOB(p.dateOfBirthString),
+        phoneNumber: p.mobile || "",
+      }));
+    })();
+  }, [searchParams]);
+
+  // 2) พอมี citizenId แล้วค่อยเช็ค DB + วิดีโอ
+  useEffect(() => {
+    if (!userInfo.id) return;
+
+    (async () => {
       try {
-        // เช็คว่าลงทะเบียนหรือยัง
         const regStatus = await DB_Name_Checker(userInfo);
         setIsRegistered(regStatus);
 
-        console.log(userInfo);
-        console.log(regStatus);
-
-        // เช็ควิดีโอดูเสร็จหรือยัง
         if (regStatus) {
           const vdoStatus = await Get_vdo_url_status(userInfo.id);
           setIsDoneVDO(Boolean(vdoStatus?.IsSuccess));
         } else {
           setIsDoneVDO(false);
         }
-
       } catch (error) {
         console.error("Error loading registration data:", error);
       }
-    }
-    loadData();
-    console.log("CZP appId:", window.czpSdk.getAppId());
-    console.log("CZP token:", window.czpSdk.getToken());
-  }, [userInfo]);
+    })();
+  }, [userInfo.id]);
 
   // ===== UI RENDER LOGIC =====
   return (
