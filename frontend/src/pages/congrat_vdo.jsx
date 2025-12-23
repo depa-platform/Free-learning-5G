@@ -49,7 +49,7 @@ export default function Congrat() {
                     <h1 className="text-2xl font-bold text-gray-800 text-center mb-2">
                         ยินดีด้วย! 🎉
                     </h1>
-
+                    <a href="tel:*123456">กดรับเน็ตฟรี</a>
                     {/* Subtitle */}
                     <p className="text-gray-600 text-center mb-6">
                         คุณได้ดูวิดีโอเรียบร้อยแล้ว
