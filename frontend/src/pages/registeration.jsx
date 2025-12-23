@@ -13,7 +13,7 @@ export default function RegistrationForm() {
   const [userInfo, setUserInfo] = useState({
     name: "John",
     surname: "Doe",
-    id: "12345679",
+    id: "781119039",
     email: "john.doe@example.com",
     dob: "1990-01-01",
     phoneNumber: "0933456790",
