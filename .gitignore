@@ -3,4 +3,5 @@ frontend/node_modules
 package-lock.json
 frontend/dist
 .DS_Store
-
+.env
+frontend/src/.env

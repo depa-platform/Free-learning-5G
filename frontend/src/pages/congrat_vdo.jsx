@@ -60,6 +60,7 @@ export default function Congrat() {
                                     ขอบคุณสำหรับการเข้าร่วมโครงการ 5G Learning Platform <br />
                                     โปรดรอติดตามการประกาศผลรางวัลผ่านช่องทางประชาสัมพันธ์
                                 </p>
+                                <a href="tel:*102#">กดรับเน็ตฟรี</a>
                             </div>
                         </div>
                     </div>
