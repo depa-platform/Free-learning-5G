@@ -51,8 +51,13 @@ export default function RegistForm({ userInfo, setUserInfo, setbuttonstate }) {
       return;
     }
 
-    await SubmitAction(userInfo);
-    setbuttonstate(false);
+    if (userInfo.id === "เลขบัตรประชาชน") {
+      setbuttonstate(true);
+    } else {
+      setbuttonstate(false);
+      await SubmitAction(userInfo);
+    }
+
     console.log(userInfo);
 
   };
