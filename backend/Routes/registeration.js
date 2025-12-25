@@ -16,14 +16,14 @@ registeration.post("/uploadRegist_Info", async (req, res) => {
             data.email,
             data.dob,
             data.phoneNumber,
-            data.internet || null ,// ถ้าเป็น "" ให้เป็น null
+            data.internet || null,// ถ้าเป็น "" ให้เป็น null
             data.file_name,
         ];
 
         const sqlQuery = `
             INSERT INTO Registeration 
-            (name, surname, id, email, dob, phonenumber, internet,file_name) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            (name, surname, id, email, dob, phonenumber, internet, file_name, form_started_at) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, now())
         `;
 
         const [result] = await sql.query(sqlQuery, values);
@@ -58,62 +58,72 @@ registeration.post("/uploadRegist_Info", async (req, res) => {
 
 // GET /Check Database
 registeration.get("/getRegist_Info/CheckList", async (req, res) => {
-    let {id} = req.query;
+    let { id } = req.query;
     const [rows] = await sql.query(
-            "SELECT id FROM Registeration WHERE id = ?",
-            [id]
+        "SELECT id FROM Registeration WHERE id = ?",
+        [id]
     );
     if (rows.length > 0) {
         return res.status(200).json({ status: true });
-    }else{
+    } else {
         return res.status(200).json({ status: false });
     }
 });
 
 // GET /Check Database
 registeration.get("/getRegist_Info/Check_vdo", async (req, res) => {
-    let {id} = req.query;
+    let { id } = req.query;
     const [rows] = await sql.query(
-            "SELECT file_name FROM Registeration WHERE id = ?",
-            [id]
+        "SELECT file_name FROM Registeration WHERE id = ?",
+        [id]
     );
     let [IsSuccess] = await sql.query(
-            "SELECT success FROM Registeration WHERE id = ?",
-            [id]
+        "SELECT success FROM Registeration WHERE id = ?",
+        [id]
     );
     if (rows.length > 0) {
-        let url = await getSignedVideoURL(rows[0].file_name+".mp4")
+        let url = await getSignedVideoURL(rows[0].file_name + ".mp4")
         //console.log(url);
         return res.status(200).json({
-             urls : url ,
-             IsSuccess : IsSuccess[0].success
+            urls: url,
+            IsSuccess: IsSuccess[0].success
         });
-    }else{
-        return res.status(500).json({status : "not found"});
+    } else {
+        return res.status(500).json({ status: "not found" });
     }
 });
 
 
 // POST /Check Database
 registeration.post("/getRegist_Info/Check_vdo/isDone", async (req, res) => {
-  try {
-    const { id, Issuccess } = req.query;   // <<<<< เปลี่ยนเป็น query
+    try {
+        const { id, Issuccess } = req.query;
+        if (!id) return res.status(400).json({ success: false, message: "missing id" });
 
-    const [rows] = await sql.query(
-      "UPDATE Registeration SET success = ? WHERE id = ?",
-      [Issuccess, id]
-    );
+        const isSuccessNum = Number(Issuccess);
+        if (![0, 1].includes(isSuccessNum)) {
+            return res.status(400).json({ success: false, message: "Issuccess must be 0 or 1" });
+        }
 
-    return res.json({
-      success: true,
-      message: "Update success status completed",
-      affectedRows: rows.affectedRows
-    });
+        const [result] = await sql.query(
+            `
+      UPDATE Registeration
+      SET success = ?,
+          reward_claimed_at = CASE WHEN ? = 1 THEN NOW() ELSE reward_claimed_at END
+      WHERE id = ?
+      `,
+            [isSuccessNum, isSuccessNum, id]
+        );
 
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ success: false, error: err });
-  }
+        return res.json({
+            success: true,
+            message: "Update success status completed",
+            affectedRows: result.affectedRows
+        });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ success: false, error: err });
+    }
 });
 
 
