@@ -50,6 +50,7 @@ export default function RegistForm({ userInfo, setUserInfo, setbuttonstate }) {
       setErrors(newErrors);
       return;
     }
+
     await SubmitAction(userInfo);
     setbuttonstate(false);
     console.log(userInfo);

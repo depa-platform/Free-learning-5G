@@ -181,6 +181,9 @@ export default function VideoView({ userInfo }) {
                   : "bg-gray-100 text-gray-400 shadow-transparent cursor-not-allowed"
                 }`}
               onClick={async () => {
+                const submitTime = new Date().toISOString();
+                console.log("กดรับเน็ตเวลา", submitTime);
+
                 await DoneVDO(userInfo.id, 1);
                 navigate("/congrat");
               }}
